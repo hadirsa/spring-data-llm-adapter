@@ -140,4 +140,78 @@ class DataAgentService @Autowired constructor(
     fun getLearnedTableNames(): List<String> {
         return schemaRegistryService.getAllSchemas().map { it.tableName }
     }
+    
+    /**
+     * Validates if the requested entity or table exists in the learned schemas.
+     * Returns an error message if not found, null if found.
+     */
+    fun validateEntityOrTableExists(entityOrTableName: String): String? {
+        val allSchemas = schemaRegistryService.getAllSchemas()
+        
+        // Check if it matches any entity class name
+        val entityMatch = allSchemas.find { 
+            it.entityClassName.equals(entityOrTableName, ignoreCase = true) ||
+            it.entityClassName.endsWith(".$entityOrTableName", ignoreCase = true)
+        }
+        
+        if (entityMatch != null) {
+            return null // Entity found
+        }
+        
+        // Check if it matches any table name
+        val tableMatch = allSchemas.find { 
+            it.tableName.equals(entityOrTableName, ignoreCase = true)
+        }
+        
+        if (tableMatch != null) {
+            return null // Table found
+        }
+        
+        // Check if it's a partial match for any entity or table
+        val partialEntityMatch = allSchemas.find { 
+            it.entityClassName.contains(entityOrTableName, ignoreCase = true) ||
+            it.tableName.contains(entityOrTableName, ignoreCase = true)
+        }
+        
+        if (partialEntityMatch != null) {
+            return "No exact match found for '$entityOrTableName'. Did you mean '${partialEntityMatch.entityClassName}' or '${partialEntityMatch.tableName}'?"
+        }
+        
+        // No match found at all
+        val availableEntities = allSchemas.map { it.entityClassName }
+        val availableTables = allSchemas.map { it.tableName }
+        
+        return "No '$entityOrTableName' related table exists in the provided schema. " +
+               "Available entities: ${availableEntities.joinToString(", ")}. " +
+               "Available tables: ${availableTables.joinToString(", ")}."
+    }
+    
+    /**
+     * Validates if multiple requested entities or tables exist in the learned schemas.
+     * Returns a map of entity/table names to error messages for those that don't exist.
+     */
+    fun validateEntitiesOrTablesExist(entityOrTableNames: List<String>): Map<String, String> {
+        val errors = mutableMapOf<String, String>()
+        
+        entityOrTableNames.forEach { name ->
+            val error = validateEntityOrTableExists(name)
+            if (error != null) {
+                errors[name] = error
+            }
+        }
+        
+        return errors
+    }
+    
+    /**
+     * Gets a list of all available entity and table names for autocomplete or validation purposes.
+     */
+    fun getAvailableEntityAndTableNames(): Map<String, List<String>> {
+        val allSchemas = schemaRegistryService.getAllSchemas()
+        return mapOf(
+            "entities" to allSchemas.map { it.entityClassName },
+            "tables" to allSchemas.map { it.tableName },
+            "descriptions" to allSchemas.map { "${it.entityClassName} (${it.description})" }
+        )
+    }
 } 
