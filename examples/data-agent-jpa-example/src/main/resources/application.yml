@@ -1,0 +1,58 @@
+# Data Agent JPA Example Configuration
+# This file contains sample configuration for the Data Agent JPA module
+
+spring:
+  application:
+    name: Data agent jpa example
+  
+  # Database configuration (using H2 for example)
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  # JPA configuration
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  # H2 Console (for development)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+# Data Agent JPA Configuration
+dataagent:
+  # Global Data Agent settings
+  auto-discover: true
+  scan-packages: com.dataagent.examples.jpa
+  startup-delay: 2000
+  
+  jpa:
+    enabled: true
+    auto-discover: true
+    scan-packages: com.dataagent.examples.jpa
+    startup-delay: 2000
+    cache-ttl: 3600
+  
+  executor:
+    enabled: true
+
+# Logging configuration for Data Agent JPA
+logging:
+  level:
+    com.dataagent.jpa: INFO
+    com.dataagent.jpa.service.JpaSchemaDiscoveryService: DEBUG
+    com.dataagent.examples.jpa: DEBUG
+
+# Server configuration
+server:
+  port: 8080
