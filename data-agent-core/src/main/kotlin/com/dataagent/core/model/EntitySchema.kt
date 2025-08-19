@@ -94,7 +94,22 @@ data class FieldSchema(
     /**
      * Field scale (for numeric fields)
      */
-    val scale: Int?
+    val scale: Int?,
+    
+    /**
+     * Human-readable description of the field
+     */
+    val description: String = "",
+    
+    /**
+     * Example values for this field (free-form string)
+     */
+    val examples: String = "",
+    
+    /**
+     * Business category or domain this field belongs to
+     */
+    val category: String = ""
 )
 
 /**
