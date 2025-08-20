@@ -23,7 +23,8 @@
     <modules>
         <module>data-agent-core</module>
         <module>data-agent-jpa</module>
-        <module>data-agent-executor</module>
+        <module>starters/data-agent-jpa-starter</module>
+        <module>starters/data-agent-starter</module>
     </modules>
 
     <dependencyManagement>
