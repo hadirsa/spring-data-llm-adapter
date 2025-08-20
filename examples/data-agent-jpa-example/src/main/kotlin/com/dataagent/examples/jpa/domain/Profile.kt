@@ -1,7 +1,7 @@
 package com.dataagent.examples.jpa.domain
 
 import com.dataagent.core.annotation.DataAgentField
-import com.dataagent.jpa.annotation.DataAgent
+import com.dataagent.core.annotation.DataAgent
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

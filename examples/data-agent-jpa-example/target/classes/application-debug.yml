@@ -1,0 +1,49 @@
+# Debug configuration for Data Agent JPA auto-discovery testing
+server:
+  port: 8080
+
+# Data Agent JPA Configuration with explicit settings
+data-agent:
+  jpa:
+    # Enable auto-discovery
+    auto-discover: true
+    
+    # Explicitly specify packages to scan
+    scan-packages: com.dataagent.examples.jpa.domain
+    
+    # Startup delay in milliseconds
+    startup-delay: 1000
+    
+    # Enable debug logging
+    debug: true
+
+# Database configuration
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+# Logging configuration for debugging
+logging:
+  level:
+    com.dataagent: DEBUG
+    com.dataagent.jpa: DEBUG
+    com.dataagent.core: DEBUG
+    org.springframework.boot.autoconfigure: DEBUG
+    org.springframework.context.event: DEBUG

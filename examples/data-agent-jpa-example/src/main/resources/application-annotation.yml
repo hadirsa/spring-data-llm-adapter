@@ -1,0 +1,67 @@
+# Example configuration using @EnableDataAgent annotation
+# This file demonstrates how to use the annotation-based package scanning
+
+# Server configuration
+server:
+  port: 8080
+
+# Data Agent JPA Configuration
+# Note: When using @EnableDataAgent(packages = "..."), these properties are optional
+# The annotation takes precedence over these properties
+data-agent:
+  jpa:
+    # Whether to enable automatic entity discovery on startup
+    auto-discover: true
+    
+    # Packages to scan for JPA entities (optional when using annotation)
+    # scan-packages: com.dataagent.examples.jpa.domain
+    
+    # Startup delay in milliseconds before starting schema discovery
+    startup-delay: 2000
+    
+    # Whether to enable automatic repository generation
+    auto-generate-repositories: true
+    
+    # Whether to enable query optimization suggestions
+    enable-query-optimization: true
+    
+    # Whether to cache discovered schemas
+    cache-schemas: true
+    
+    # Cache TTL in seconds
+    cache-ttl: 3600
+    
+    # Maximum number of entities to discover
+    max-entities: 1000
+    
+    # Whether to enable debug logging
+    debug: false
+
+# Database configuration
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+# Logging configuration
+logging:
+  level:
+    com.dataagent: INFO
+    com.dataagent.jpa: DEBUG
+    org.springframework.boot.autoconfigure: DEBUG

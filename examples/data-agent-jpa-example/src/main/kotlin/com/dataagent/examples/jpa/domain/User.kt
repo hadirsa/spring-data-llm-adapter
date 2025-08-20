@@ -1,6 +1,6 @@
 package com.dataagent.examples.jpa.domain
 
-import com.dataagent.jpa.annotation.DataAgent
+import com.dataagent.core.annotation.DataAgent
 import com.dataagent.core.annotation.DataAgentField
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
