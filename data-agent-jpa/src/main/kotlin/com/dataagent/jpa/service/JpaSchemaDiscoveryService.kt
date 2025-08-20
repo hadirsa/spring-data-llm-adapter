@@ -1,23 +1,22 @@
 package com.dataagent.jpa.service
 
-import com.dataagent.core.model.*
 import com.dataagent.core.service.SchemaDiscoveryService
-import com.dataagent.jpa.annotation.DataAgent
-import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
-import org.springframework.core.type.filter.AnnotationTypeFilter
-import org.springframework.stereotype.Service
-import org.springframework.util.ClassUtils
+import com.dataagent.core.annotation.DataAgent
+import com.dataagent.core.annotation.DataAgentField
+import com.dataagent.core.model.EntitySchema
+import com.dataagent.core.model.FieldSchema
+import com.dataagent.core.model.RelationshipSchema
+import jakarta.persistence.*
+import org.reflections.Reflections
+import org.reflections.scanners.Scanners
+import org.slf4j.LoggerFactory
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
-import jakarta.persistence.*
-import org.slf4j.LoggerFactory
 
 /**
  * JPA-specific service responsible for discovering and learning entity schemas
  * from classes annotated with @DataAgent.
  */
-@Service
 class JpaSchemaDiscoveryService : SchemaDiscoveryService {
     
     private val logger = LoggerFactory.getLogger(JpaSchemaDiscoveryService::class.java)
@@ -28,23 +27,14 @@ class JpaSchemaDiscoveryService : SchemaDiscoveryService {
     override fun discoverEntities(basePackage: String): List<EntitySchema> {
         logger.info("Starting JPA entity discovery in package: $basePackage")
         
-        val scanner = ClassPathScanningCandidateComponentProvider(false)
-        scanner.addIncludeFilter(AnnotationTypeFilter(DataAgent::class.java))
-        
-        val candidates = scanner.findCandidateComponents(basePackage)
-        logger.info("Found ${candidates.size} candidate JPA entities")
-        
-        return candidates.mapNotNull { beanDefinition ->
+        val reflections = Reflections(basePackage, Scanners.TypesAnnotated)
+        val types = reflections.getTypesAnnotatedWith(DataAgent::class.java)
+        logger.info("Found ${types.size} candidate JPA entities")
+        return types.mapNotNull { clazz ->
             try {
-                val className = beanDefinition.beanClassName
-                if (className != null) {
-                    val entityClass = ClassUtils.forName(className, null)
-                    discoverEntitySchema(entityClass)
-                } else {
-                    null
-                }
+                discoverEntitySchema(clazz)
             } catch (e: Exception) {
-                logger.error("Failed to discover JPA entity: ${beanDefinition.beanClassName}", e)
+                logger.error("Failed to discover JPA entity: ${clazz.name}", e)
                 null
             }
         }
@@ -111,6 +101,7 @@ class JpaSchemaDiscoveryService : SchemaDiscoveryService {
         val columnAnnotation = field.getAnnotation(Column::class.java)
         val idAnnotation = field.getAnnotation(Id::class.java)
         val generatedValueAnnotation = field.getAnnotation(GeneratedValue::class.java)
+        val dataAgentField = field.getAnnotation(DataAgentField::class.java)
         
         // Skip JPA relationship fields
         if (field.isAnnotationPresent(OneToOne::class.java) ||
@@ -138,7 +129,10 @@ class JpaSchemaDiscoveryService : SchemaDiscoveryService {
             isPrimaryKey = idAnnotation != null,
             length = columnAnnotation?.length?.takeIf { it > 0 },
             precision = columnAnnotation?.precision?.takeIf { it > 0 },
-            scale = columnAnnotation?.scale?.takeIf { it > 0 }
+            scale = columnAnnotation?.scale?.takeIf { it > 0 },
+            description = dataAgentField?.description ?: "",
+            examples = dataAgentField?.examples ?: "",
+            category = dataAgentField?.category ?: ""
         )
     }
     
