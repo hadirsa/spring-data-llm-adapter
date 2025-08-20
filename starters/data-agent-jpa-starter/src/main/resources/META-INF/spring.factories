@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.dataagent.executor.config.DataAgentExecutorAutoConfiguration
+com.dataagent.jpa.config.DataAgentJpaAutoConfiguration

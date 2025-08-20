@@ -7,20 +7,20 @@
 
     <parent>
         <groupId>com.dataagent</groupId>
-        <artifactId>data-agent</artifactId>
+        <artifactId>data-agent-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>data-agent-executor-starter</artifactId>
-    <name>Data Agent Executor Starter</name>
-    <description>Spring Boot Starter for Data Agent Executor Module</description>
+    <artifactId>data-agent-jpa-starter</artifactId>
+    <name>Data Agent JPA Starter</name>
+    <description>Spring Boot Starter for Data Agent JPA Module</description>
 
     <dependencies>
-        <!-- Data Agent Executor Module -->
+        <!-- Data Agent JPA Module -->
         <dependency>
             <groupId>com.dataagent</groupId>
-            <artifactId>data-agent-executor</artifactId>
+            <artifactId>data-agent-jpa</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -28,6 +28,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Spring Web for controller annotations and ResponseEntity -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- Spring Boot Configuration Processor -->
