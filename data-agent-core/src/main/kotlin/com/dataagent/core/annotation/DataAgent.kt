@@ -1,9 +1,9 @@
-package com.dataagent.jpa.annotation
+package com.dataagent.core.annotation
 
 /**
- * Annotation to mark JPA entities that should be learned by the Data Agent.
+ * Annotation to mark entities that should be learned by the Data Agent.
  * This annotation enables the Data Agent to automatically discover and learn
- * the database schema structure for the annotated entity.
+ * the schema structure for the annotated entity across all supported modules.
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
@@ -20,7 +20,7 @@ annotation class DataAgent(
     val discoverable: Boolean = true,
     
     /**
-     * Custom table name if different from the entity class name
+     * Custom table/collection name if different from the entity class name
      */
     val tableName: String = ""
-) 
+)
