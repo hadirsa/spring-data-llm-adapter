@@ -83,7 +83,10 @@ For maximum control, use the individual modules:
 ```kotlin
 @Entity
 @Table(name = "users")
-@DataAgent(description = "User entity for authentication and profile management")
+@DataAgent(
+    description = "User entity for authentication and profile management",
+    discoverable = true
+)
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -100,8 +103,11 @@ class User(
 ### 2. Enable Data Agent
 
 ```kotlin
+@EnableDataAgent(
+  packages = "ai.hadirsa.examples.jpa.domain",
+  autoDiscover = true
+)
 @SpringBootApplication
-@EnableDataAgent
 class YourApplication
 
 fun main(args: Array<String>) {
@@ -116,6 +122,61 @@ fun main(args: Array<String>) {
 - `POST /api/jpa/discover` - Trigger schema discovery
 - `GET /api/jpa/schemas/{className}` - Get specific schema
 
+Example responses (Profile entity):
+```json
+{
+  "entityClassName": "ai.hadirsa.examples.jpa.domain.Profile",
+  "tableName": "UM_PROFILE",
+  "description": "Example JPA entity Profile for demonstration purposes",
+  "fields": [
+    {
+      "fieldName": "id",
+      "columnName": "id",
+      "fieldType": "String",
+      "columnType": "VARCHAR",
+      "nullable": true,
+      "unique": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "description": "Unique identifier for the profile",
+      "examples": "uuid-string",
+      "category": "identification",
+      "primaryKey": true
+    },
+    {
+      "fieldName": "ssn",
+      "columnName": "ssn",
+      "fieldType": "String",
+      "columnType": "VARCHAR",
+      "nullable": true,
+      "unique": true,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "description": "Social security number",
+      "examples": "123-45-6789",
+      "category": "personal_info",
+      "primaryKey": false
+    },
+    
+   ...
+    
+    
+  ],
+  "relationships": [
+    {
+      "fieldName": "user",
+      "targetEntity": "ai.hadirsa.examples.jpa.domain.User",
+      "relationshipType": "OneToOne",
+      "mappedBy": "profile",
+      "joinColumn": null,
+      "cascadeTypes": [],
+      "fetchType": "EAGER"
+    }
+  ]
+}
+```
 ## Features
 
 ### Schema Discovery
