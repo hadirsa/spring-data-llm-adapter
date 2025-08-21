@@ -6,23 +6,23 @@ A modular Spring Boot library for intelligent database schema discovery and natu
 
 The project is structured into several modules:
 
-- **`data-agent-core`**: Core functionality for schema discovery and management (technology-agnostic)
-- **`data-agent-jpa`**: JPA-specific schema discovery implementation
+- **`spring-data-llm-adapter`**: Core functionality for schema discovery and management (technology-agnostic)
+- **`spring-data-llm-adapter-jpa`**: JPA-specific schema discovery implementation
 - **`starters/`**: Spring Boot integration modules
-  - **`data-agent-jpa-starter`**: Spring Boot starter for JPA functionality only
-  - **`data-agent-starter`**: Complete Spring Boot starter (JPA + Generator)
+  - **`spring-data-llm-adapter-jpa-starter`**: Spring Boot starter for JPA functionality only
+  - **`spring-data-llm-adapter-starter`**: Complete Spring Boot starter (JPA + future modules)
 
 ## Project Structure
 
 ```
-data-agent/
-├── data-agent-core/           # Core functionality (technology-agnostic)
-├── data-agent-jpa/            # JPA-specific schema discovery
+spring-data-llm-adapter/
+├── spring-data-llm-adapter/           # Core functionality (technology-agnostic)
+├── spring-data-llm-adapter-jpa/            # JPA-specific schema discovery
 ├── starters/                   # Spring Boot integration modules
-│   ├── data-agent-jpa-starter/        # JPA starter
-│   └── data-agent-starter/            # Complete starter
+│   ├── spring-data-llm-adapter-jpa-starter/        # JPA starter
+│   └── spring-data-llm-adapter-starter/            # Complete starter
 ├── examples/                   # Example applications
-│   └── data-agent-jpa-example/       # Complete working example
+│   └── jpa-example/       # Complete working example
 ├── pom.xml                    # Parent POM
 └── README.md                  # This file
 ```
@@ -35,8 +35,8 @@ Add the complete starter to your Spring Boot project:
 
 ```xml
 <dependency>
-    <groupId>com.dataagent</groupId>
-    <artifactId>data-agent-starter</artifactId>
+    <groupId>ai.hadirsa</groupId>
+    <artifactId>spring-data-llm-adapter-starter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -48,8 +48,8 @@ If you only need specific functionality:
 ```xml
 <!-- For JPA schema discovery only -->
 <dependency>
-    <groupId>com.dataagent</groupId>
-    <artifactId>data-agent-jpa-starter</artifactId>
+    <groupId>ai.hadirsa</groupId>
+    <artifactId>spring-data-llm-adapter-jpa-starter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
@@ -61,14 +61,14 @@ For maximum control, use the individual modules:
 
 ```xml
 <dependency>
-    <groupId>com.dataagent</groupId>
-    <artifactId>data-agent-core</artifactId>
+    <groupId>ai.hadirsa</groupId>
+    <artifactId>spring-data-llm-adapter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
 <dependency>
-    <groupId>com.dataagent</groupId>
-    <artifactId>data-agent-jpa</artifactId>
+    <groupId>ai.hadirsa</groupId>
+    <artifactId>spring-data-llm-adapter-jpa</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -81,9 +81,12 @@ For maximum control, use the individual modules:
 ### 1. Mark Your Entities
 
 ```kotlin
+@DataAgent(
+  description = "User entity for authentication and profile management",
+  discoverable = true
+)
 @Entity
 @Table(name = "users")
-@DataAgent(description = "User entity for authentication and profile management")
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -100,8 +103,11 @@ class User(
 ### 2. Enable Data Agent
 
 ```kotlin
+@EnableDataAgent(
+  packages = "ai.hadirsa.examples.jpa.domain",
+  autoDiscover = true
+)
 @SpringBootApplication
-@EnableDataAgent
 class YourApplication
 
 fun main(args: Array<String>) {
@@ -116,6 +122,61 @@ fun main(args: Array<String>) {
 - `POST /api/jpa/discover` - Trigger schema discovery
 - `GET /api/jpa/schemas/{className}` - Get specific schema
 
+Example responses (Profile entity):
+```json
+{
+  "entityClassName": "ai.hadirsa.examples.jpa.domain.Profile",
+  "tableName": "UM_PROFILE",
+  "description": "Example JPA entity Profile for demonstration purposes",
+  "fields": [
+    {
+      "fieldName": "id",
+      "columnName": "id",
+      "fieldType": "String",
+      "columnType": "VARCHAR",
+      "nullable": true,
+      "unique": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "description": "Unique identifier for the profile",
+      "examples": "uuid-string",
+      "category": "identification",
+      "primaryKey": true
+    },
+    {
+      "fieldName": "ssn",
+      "columnName": "ssn",
+      "fieldType": "String",
+      "columnType": "VARCHAR",
+      "nullable": true,
+      "unique": true,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "description": "Social security number",
+      "examples": "123-45-6789",
+      "category": "personal_info",
+      "primaryKey": false
+    },
+    
+   ...
+    
+    
+  ],
+  "relationships": [
+    {
+      "fieldName": "user",
+      "targetEntity": "ai.hadirsa.examples.jpa.domain.User",
+      "relationshipType": "OneToOne",
+      "mappedBy": "profile",
+      "joinColumn": null,
+      "cascadeTypes": [],
+      "fetchType": "EAGER"
+    }
+  ]
+}
+```
 ## Features
 
 ### Schema Discovery
@@ -128,7 +189,7 @@ fun main(args: Array<String>) {
 
 See the `examples/` directory for complete working applications:
 
-- `data-agent-jpa-example/` - Complete example with JPA and Executor functionality
+- `jpa-example/` - Complete example with JPA and Executor functionality
 
 ## Development
 
@@ -147,7 +208,7 @@ See the `examples/` directory for complete working applications:
 ### Running the Example
 
 ```bash
-cd examples/data-agent-jpa-example
+cd examples/jpa-example
 ./mvnw spring-boot:run
 ```
 

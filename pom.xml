@@ -5,12 +5,12 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dataagent</groupId>
-    <artifactId>data-agent-parent</artifactId>
+    <groupId>ai.hadirsa</groupId>
+    <artifactId>spring-data-llm-adapter-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Data Agent</name>
-    <description>A modular Spring Boot project for intelligent data access</description>
+    <name>Spring Data LLM Adapter</name>
+    <description>Adapters for exposing Spring Data entity metadata to LLMs</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -21,10 +21,10 @@
     </properties>
 
     <modules>
-        <module>data-agent-core</module>
-        <module>data-agent-jpa</module>
-        <module>starters/data-agent-jpa-starter</module>
-        <module>starters/data-agent-starter</module>
+        <module>spring-data-llm-adapter</module>
+        <module>spring-data-llm-adapter-jpa</module>
+        <module>starters/spring-data-llm-adapter-starter</module>
+        <module>starters/spring-data-llm-adapter-jpa-starter</module>
     </modules>
 
     <dependencyManagement>
