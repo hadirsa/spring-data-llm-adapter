@@ -6,23 +6,23 @@ A modular Spring Boot library for intelligent database schema discovery and natu
 
 The project is structured into several modules:
 
-- **`data-agent-core`**: Core functionality for schema discovery and management (technology-agnostic)
-- **`data-agent-jpa`**: JPA-specific schema discovery implementation
+- **`spring-data-llm-adapter`**: Core functionality for schema discovery and management (technology-agnostic)
+- **`spring-data-llm-adapter-jpa`**: JPA-specific schema discovery implementation
 - **`starters/`**: Spring Boot integration modules
-  - **`data-agent-jpa-starter`**: Spring Boot starter for JPA functionality only
-  - **`data-agent-starter`**: Complete Spring Boot starter (JPA + Generator)
+  - **`spring-data-llm-adapter-jpa-starter`**: Spring Boot starter for JPA functionality only
+  - **`spring-data-llm-adapter-starter`**: Complete Spring Boot starter (JPA + future modules)
 
 ## Project Structure
 
 ```
-data-agent/
-├── data-agent-core/           # Core functionality (technology-agnostic)
-├── data-agent-jpa/            # JPA-specific schema discovery
+spring-data-llm-adapter/
+├── spring-data-llm-adapter/           # Core functionality (technology-agnostic)
+├── spring-data-llm-adapter-jpa/            # JPA-specific schema discovery
 ├── starters/                   # Spring Boot integration modules
-│   ├── data-agent-jpa-starter/        # JPA starter
-│   └── data-agent-starter/            # Complete starter
+│   ├── spring-data-llm-adapter-jpa-starter/        # JPA starter
+│   └── spring-data-llm-adapter-starter/            # Complete starter
 ├── examples/                   # Example applications
-│   └── data-agent-jpa-example/       # Complete working example
+│   └── jpa-example/       # Complete working example
 ├── pom.xml                    # Parent POM
 └── README.md                  # This file
 ```
@@ -36,7 +36,7 @@ Add the complete starter to your Spring Boot project:
 ```xml
 <dependency>
     <groupId>ai.hadirsa</groupId>
-    <artifactId>data-agent-starter</artifactId>
+    <artifactId>spring-data-llm-adapter-starter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -49,7 +49,7 @@ If you only need specific functionality:
 <!-- For JPA schema discovery only -->
 <dependency>
     <groupId>ai.hadirsa</groupId>
-    <artifactId>data-agent-jpa-starter</artifactId>
+    <artifactId>spring-data-llm-adapter-jpa-starter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
@@ -62,13 +62,13 @@ For maximum control, use the individual modules:
 ```xml
 <dependency>
     <groupId>ai.hadirsa</groupId>
-    <artifactId>data-agent-core</artifactId>
+    <artifactId>spring-data-llm-adapter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
 <dependency>
     <groupId>ai.hadirsa</groupId>
-    <artifactId>data-agent-jpa</artifactId>
+    <artifactId>spring-data-llm-adapter-jpa</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -128,7 +128,7 @@ fun main(args: Array<String>) {
 
 See the `examples/` directory for complete working applications:
 
-- `data-agent-jpa-example/` - Complete example with JPA and Executor functionality
+- `jpa-example/` - Complete example with JPA and Executor functionality
 
 ## Development
 
@@ -147,7 +147,7 @@ See the `examples/` directory for complete working applications:
 ### Running the Example
 
 ```bash
-cd examples/data-agent-jpa-example
+cd examples/jpa-example
 ./mvnw spring-boot:run
 ```
 
