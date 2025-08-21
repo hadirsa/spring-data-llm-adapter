@@ -35,7 +35,7 @@ Add the complete starter to your Spring Boot project:
 
 ```xml
 <dependency>
-    <groupId>com.dataagent</groupId>
+    <groupId>ai.hadirsa</groupId>
     <artifactId>data-agent-starter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
@@ -48,7 +48,7 @@ If you only need specific functionality:
 ```xml
 <!-- For JPA schema discovery only -->
 <dependency>
-    <groupId>com.dataagent</groupId>
+    <groupId>ai.hadirsa</groupId>
     <artifactId>data-agent-jpa-starter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
@@ -61,13 +61,13 @@ For maximum control, use the individual modules:
 
 ```xml
 <dependency>
-    <groupId>com.dataagent</groupId>
+    <groupId>ai.hadirsa</groupId>
     <artifactId>data-agent-core</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
 <dependency>
-    <groupId>com.dataagent</groupId>
+    <groupId>ai.hadirsa</groupId>
     <artifactId>data-agent-jpa</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
