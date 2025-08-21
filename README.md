@@ -81,12 +81,12 @@ For maximum control, use the individual modules:
 ### 1. Mark Your Entities
 
 ```kotlin
+@DataAgent(
+  description = "User entity for authentication and profile management",
+  discoverable = true
+)
 @Entity
 @Table(name = "users")
-@DataAgent(
-    description = "User entity for authentication and profile management",
-    discoverable = true
-)
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
