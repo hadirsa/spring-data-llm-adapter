@@ -1,4 +1,4 @@
-# # Spring Data LLM Adapter
+# Spring Data LLM Adapter
 
 A modular Spring Boot library for intelligent database schema discovery and natural language query processing using LLM integration.
 
