@@ -181,15 +181,14 @@ Example responses (Profile entity):
 
 ### Schema Discovery
 - Automatic scanning of `@DataAgent` annotated entities
-- Multi-database support through Spring Data JPA
-- Caching and performance optimization
+- Caching
 - REST API for schema information
 
 ## Examples
 
 See the `examples/` directory for complete working applications:
 
-- `jpa-example/` - Complete example with JPA and Executor functionality
+- `jpa-example/` - Complete example with JPA
 
 ## Development
 
