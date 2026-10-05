@@ -1,0 +1,45 @@
+# Publishes all modules to GitHub Packages:
+#   - push to main      -> current -SNAPSHOT version from pom.xml
+#   - release published -> version taken from the release tag (v1.2.3 -> 1.2.3)
+name: Publish packages
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+          server-id: github # matches distributionManagement/repository/id in pom.xml
+
+      - name: Set release version from tag
+        if: github.event_name == 'release'
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "Publishing version $VERSION"
+          mvn -B versions:set -DnewVersion="$VERSION" -DgenerateBackupPoms=false -DprocessAllModules
+
+      - name: Build, test and deploy
+        run: mvn -B deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
