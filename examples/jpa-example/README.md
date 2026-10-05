@@ -22,7 +22,7 @@ The Data Agent JPA module provides automatic schema discovery and learning for J
 
 ### Prerequisites
 
-- Java 17 or higher
+- Java 25 or higher
 - Maven 3.6 or higher
 
 ### Running the Example

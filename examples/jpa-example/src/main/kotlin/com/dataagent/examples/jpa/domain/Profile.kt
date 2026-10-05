@@ -5,10 +5,10 @@ import ai.hadirsa.spring.data.llm.adapter.annotation.DataAgent
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
-import org.hibernate.annotations.GenericGenerator
 
 @DataAgent(
     description = "Example JPA entity Profile for demonstration purposes",
@@ -18,8 +18,7 @@ import org.hibernate.annotations.GenericGenerator
 @Table(name = "UM_PROFILE")
 class Profile(
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     @DataAgentField(
         description = "Unique identifier for the profile",
